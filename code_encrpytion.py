@@ -1,6 +1,8 @@
 import base64
 import rsa
 
+def Check_Code():
+    print(test)
 
 def Encrpytion(dir):
     edited_lines = []

@@ -1,13 +1,12 @@
 import os
 from pymongo import MongoClient
 from tkinter import *
+import mongo_url as url
 import tkinter.messagebox as msgbox
-import mongo_url 
 from werkzeug.security import generate_password_hash, check_password_hash
 import code_encrpytion as enc
 
-
-client = MongoClient(host=mongo_url.url, port=27017)
+client = MongoClient(host=url.url, port=27017)
 db = client['crypto_db']
 collection = db['user_info']
 window = Tk()
@@ -32,7 +31,7 @@ file_path = StringVar()
 def set_gitignore():
     with open('.gitignore','a+') as f:
         line = f.readlines()
-        if '\nprivate.pem' or 'private.pem' not in line:
+        if '\nprivate.pem' or 'private.pem' or 'private.pem\n' not in line:
             f.write('\nprivate.pem')
 
 def openFrame(frame):
@@ -81,18 +80,27 @@ def login():
         msgbox.showinfo("로그인 실패","비밀번호가 틀림")
 
 def regist_userinfo():
-    to_db = {
-        "id": register_id.get(),
-        "password": generate_password_hash(register_pass.get()),
-        "private_key": ""
-    }
-    collection.insert_one(to_db)
-    msgbox.showinfo("회원가입","회원가입 성공")
-    openFrame(frame_login)
+    find_id = collection.find_one({"id":register_id.get()})
+    if find_id == None:
+        if register_id.get() != "" and register_pass.get() != "":
+            to_db = {
+                "id": register_id.get(),
+                "password": generate_password_hash(register_pass.get()),
+                "private_key": ""
+            }
+            collection.insert_one(to_db)
+            msgbox.showinfo("회원가입","회원가입 성공")
+            openFrame(frame_login)
+        else:
+            msgbox.showinfo("알림","아이디, 비밀번호를 모두 입력해주십시오")
+    else:
+        msgbox.showerror("알림","해당 아이디는 존재합니다")
 
 
 
 #회원가입 페이지
+Label(frame_register, text = "Username : ").grid(row = 0, column = 0, padx = 10, pady = 10)
+Label(frame_register, text = "Password : ").grid(row = 1, column = 0, padx = 10, pady = 10)
 Entry(frame_register, textvariable = register_id).grid(row = 0, column = 1, padx = 10, pady = 10)
 Entry(frame_register, textvariable = register_pass, show='*').grid(row = 1, column = 1, padx = 10, pady = 10)
 Button(frame_register, text = 'register',command=regist_userinfo).grid(row = 2, column = 1, padx = 10, pady = 10)
