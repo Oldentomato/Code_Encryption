@@ -5,3 +5,5 @@ test_code.py
 mongo_url.py
 .DS_Store
 private.pem
+build
+dist

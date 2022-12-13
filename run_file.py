@@ -6,7 +6,16 @@ import tkinter.messagebox as msgbox
 from werkzeug.security import generate_password_hash, check_password_hash
 import code_encrpytion as enc
 from server import *
+import sys
 
+if getattr(sys, 'frozen', False):
+    #test.exe로 실행한 경우,test.exe를 보관한 디렉토리의 full path를 취득
+    program_directory = os.path.dirname(os.path.abspath(sys.executable))
+else:
+    #python test.py로 실행한 경우,test.py를 보관한 디렉토리의 full path를 취득
+    program_directory = os.path.dirname(os.path.abspath(__file__))
+#현재 작업 디렉토리를 변경
+os.chdir(program_directory)
 
 window = Tk()
 window.geometry("500x200")
