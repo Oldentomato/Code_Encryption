@@ -16,8 +16,8 @@
     ![DatabaseScreenShot](https://github.com/Oldentomato/Code_Encrpytion/blob/main/readme_imgs/dbimage.png)
         - Files Array is a list of files in which encryption code was detected in your project.
           
-    **At run time, the program must be in the project file.**
-    **Neww Install OpenSSL**
+    **At run time, the program must be in the project file.**  
+    **Need Install OpenSSL**
 
 - Download your public, private key (private key will upload your DB and write gitignore automally)
 - Write this code above the code you want to encrypt.  
