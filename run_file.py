@@ -1,12 +1,15 @@
 import os
-from pymongo import MongoClient
 from tkinter import *
-import mongo_url as url
 import tkinter.messagebox as msgbox
 from werkzeug.security import generate_password_hash, check_password_hash
 import code_encrpytion as enc
 from server import *
 import sys
+#pyinstaller 로 인해 필요함
+import base64
+import rsa
+import mongo_url as url
+from pymongo import MongoClient
 
 if getattr(sys, 'frozen', False):
     #test.exe로 실행한 경우,test.exe를 보관한 디렉토리의 full path를 취득
@@ -40,7 +43,7 @@ def set_gitignore():
     with open('.gitignore','a+') as f:
         line = f.readlines()
         if '\nprivate.pem' or 'private.pem\n' not in line:
-            f.write('\nprivate.pem')
+            f.write('private.pem')
 
 def openFrame(frame):
     frame.tkraise()
@@ -80,10 +83,10 @@ def login():
         window.title("Main")
         Label(frame_main, text = "Welcome " + user_id.get()).grid(row = 0, column = 1, padx = 10, pady = 10)
         Button(frame_main, text = 'Download_Key',command=lambda:[download_key(user_id.get())]).grid(row = 1, column = 1, padx = 10, pady = 10)
-        Label(frame_main, text = "FileName: ").grid(row = 2, column = 1, padx = 10, pady = 10)
+        Label(frame_main, text = "ProjectName: ").grid(row = 2, column = 1, padx = 10, pady = 10)
         Entry(frame_main, textvariable = en_file_name).grid(row = 2, column = 2, padx = 10, pady = 10)
         Button(frame_main, text = 'Encrpytion',command=lambda:[enc.Encrpytion(en_file_name.get(),user_id.get())]).grid(row = 4, column = 1, padx = 10, pady = 10)
-        Label(frame_main, text = "FileName: ").grid(row = 5, column = 1, padx = 10, pady = 10)
+        Label(frame_main, text = "ProjectName: ").grid(row = 5, column = 1, padx = 10, pady = 10)
         Entry(frame_main, textvariable = de_file_name).grid(row = 5, column = 2, padx = 10, pady = 10)
         Button(frame_main, text = 'Decrpytion',command=lambda:[enc.Decrpytion(de_file_name.get(),user_id.get())]).grid(row = 6, column = 1, padx = 10, pady = 10)
         openFrame(frame_main)

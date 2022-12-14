@@ -30,8 +30,13 @@ def Encrpytion(name,userid):
         "filename": name,
         "file_list": encrpyt_file_list
     }
+    if GetFileInfo(send_file_info.get('filename'),userid) == None:
+        UpdateFileData(userid,send_file_info)
+    else:
+        if msgbox.askyesno("확인필요","이미 존재하는 이름입니다. 덮어씌웁니까?"):
+            UpdateFileData(userid,send_file_info)
 
-    UpdateFileData(userid,send_file_info)
+
 
     for file_dir in encrpyt_file_list:
         with open(file_dir) as f:
