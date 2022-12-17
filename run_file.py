@@ -10,6 +10,7 @@ import base64
 import rsa
 import mongo_url as url
 from pymongo import MongoClient
+from Crypto.PublicKey import RSA
 
 if getattr(sys, 'frozen', False):
     #test.exe로 실행한 경우,test.exe를 보관한 디렉토리의 full path를 취득
@@ -59,15 +60,16 @@ def download_key(id):
         result = GetUserInfo(id)
         if result['private_key'] == "":
             msgbox.showinfo("알림","키파일이 조회되지 않아 새로 생성합니다.")
-            os.system('openssl genrsa -out private.pem 4096') # generating private_key
-            os.system('openssl rsa -in private.pem -out public.pem -pubout')# generating public_key
+            enc.GenerateAllKey()
             upload_key(id)
         else:
-            if not os.path.isfile('private.pem'):
+            if not os.path.isfile('private.pem'): #private 이 없을 경우
                 with open('private.pem','w') as f:
                     f.writelines(result['private_key'])
-            if not os.path.isfile('public.pem'):
-                os.system('openssl rsa -in private.pem -out public.pem -pubout')
+                msgbox.showinfo("확인","private key 생성됨")
+            if not os.path.isfile('public.pem'): #public 이 없을 경우
+                enc.GeneratePublicKey()
+                msgbox.showinfo("확인","public key 생성됨")
         set_gitignore()
     else:
         msgbox.showinfo("알림","이미 키들을 가지고 있습니다.")

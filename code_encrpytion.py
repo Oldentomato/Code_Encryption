@@ -3,10 +3,29 @@ import rsa
 import os
 from server import *
 import tkinter.messagebox as msgbox
+from Crypto.PublicKey import RSA
 
 encrpyt_file_list = []
 decrpyt_file_list = []
 code_file_list = ['.py','.js','.cs','.ts']
+
+KEY_LENGTH = 4096
+
+def GeneratePublicKey():
+    with open('private.pem','r') as h:
+        key = RSA.importKey(h.read())
+    publickey = key.publickey()
+    with open('public.pem','wb+') as f:
+        f.write(publickey.exportKey('PEM'))
+
+
+def GenerateAllKey():
+    privatekey = RSA.generate(KEY_LENGTH)
+    with open('private.pem','wb+') as f:
+        f.write(privatekey.exportKey('PEM'))
+    publickey = privatekey.publickey()
+    with open('public.pem','wb+') as f:
+        f.write(publickey.exportKey('PEM'))
 
 def Check_Code():
     for (path,dir,files) in os.walk("."):
