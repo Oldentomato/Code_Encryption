@@ -21,8 +21,7 @@ def GetFileInfo(name,id):
             return file['file_list']
 
 def UpdateFileData(id,data):
-    if GetFileInfo(data.get('filename'),id) == None:
-        collection.update_one({"id":id},{"$push":{"Files":data}})
+    collection.update_one({"id":id},{"$push":{"Files":data}})
 
 
 
