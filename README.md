@@ -6,6 +6,7 @@
 - pymongo 4.3.3
 - rsa 4.9
 - Werkzeug 2.2.2  
+- pycryptodome 3.16.0
 
 > Introdution  
 - I used gitigore or git secret when uploading DB URL or code with personal information on GitHub. But the downside of this is that I always had to carry around key files that weren't uploaded when working elsewhere. This program issues a private key and a public key, which is uploaded to the private database and can be imported from anywhere.
@@ -18,6 +19,7 @@
           
     **At run time, the program must be in the project file.**  
     ~~Need Install OpenSSL~~
+
 
 - Download your public, private key (private key will upload your DB and write gitignore automally)
 - Write this code above the code you want to encrypt.  
