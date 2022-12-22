@@ -20,6 +20,9 @@ def GetFileInfo(name,id):
         if file.get('filename') == name:
             return file['file_list']
 
+def DeleteFileData(id,name):
+    collection.update_one({"id":id},{"$pull":{"Files":{"filename" : name}}})
+
 def UpdateFileData(id,data):
     collection.update_one({"id":id},{"$push":{"Files":data}})
 

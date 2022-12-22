@@ -52,31 +52,35 @@ def Encrpytion(name,userid):
         "filename": name,
         "file_list": encrpyt_file_list
     }
-    if GetFileInfo(send_file_info.get('filename'),userid) == None:
-        UpdateFileData(userid,send_file_info)
-    else:
+    if GetFileInfo(send_file_info.get('filename'),userid) != None:
         if msgbox.askyesno("확인필요","이미 존재하는 이름입니다. 덮어씌웁니까?"):
+            DeleteFileData(userid,send_file_info.get('filename'))
             UpdateFileData(userid,send_file_info)
-            for file_dir in encrpyt_file_list:
-                with open(file_dir , 'rt', encoding='UTF8') as f:
-                    lines = f.readlines()
-                    for line in lines:
-                        if line == '#encrpytion_underline\n':
-                            edited_lines.append('#encrpyted\n')
-                            encrpyt_mode = True
-                            continue
-                        if encrpyt_mode == True:
-                            line = line.encode('UTF8')
-                            encrpyted_bytes = rsa.encrypt(line,public_key)
-                            encrpyted_msg = base64.b64encode(encrpyted_bytes).decode('UTF-8')
-                            edited_lines.append('#'+encrpyted_msg+'\n')
-                            encrpyt_mode = False
-                        else:
-                            edited_lines.append(line)
-                with open(file_dir,'wt', encoding='UTF8') as f:
-                    f.writelines(edited_lines)
-                edited_lines.clear()
-            msgbox.showinfo("알림","암호화가 완료되었습니다.")
+        else:
+            encrpyt_file_list.clear()
+            return
+    else:
+        UpdateFileData(userid,send_file_info)
+    for file_dir in encrpyt_file_list:
+        with open(file_dir , 'rt', encoding='UTF8') as f:
+            lines = f.readlines()
+            for line in lines:
+                if line == '#encrpytion_underline\n':
+                    edited_lines.append('#encrpyted\n')
+                    encrpyt_mode = True
+                    continue
+                if encrpyt_mode == True:
+                    line = line.encode('UTF8')
+                    encrpyted_bytes = rsa.encrypt(line,public_key)
+                    encrpyted_msg = base64.b64encode(encrpyted_bytes).decode('UTF-8')
+                    edited_lines.append('#'+encrpyted_msg+'\n')
+                    encrpyt_mode = False
+                else:
+                    edited_lines.append(line)
+        with open(file_dir,'wt', encoding='UTF8') as f:
+            f.writelines(edited_lines)
+        edited_lines.clear()
+    msgbox.showinfo("알림","암호화가 완료되었습니다.")
 
 
     
