@@ -7,12 +7,14 @@ import tkinter.messagebox as msgbox
 from Crypto.PublicKey import RSA
 
 
+
 encrpyt_file_list = []
 decrpyt_file_list = []
 code_file_list = ['.py','.js','.cs','.ts']
 code_file_list_2 = ['.php']
 
-KEY_LENGTH = 4096
+
+KEY_LENGTH = 1024
 
 def GeneratePublicKey():
     with open('private.pem','r') as h:
@@ -34,10 +36,16 @@ def Check_Code():
     for (path,dir,files) in os.walk("."):
         for file in files:
             if file[-3:] in code_file_list:
-                with open(file,'rt', encoding='UTF8') as f:
+                if file[-3:] == '.js':
+                    file_type = "//"
+                elif file[-3:] == '.py':
+                    file_type = "#"
+                with open(os.path.join(path,file),'rt', encoding='UTF8') as f:
                     text = f.readlines()
-                if "#encrpytion_underline\n" in text:
-                    encrpyt_file_list.append(file)
+                if file_type+"encryption_underline\n" in text:
+                    encrpyt_file_list.append(os.path.join(path,file))
+                    
+
     
 
 
@@ -64,16 +72,21 @@ def Encrpytion(name,userid):
     for file_dir in encrpyt_file_list:
         with open(file_dir , 'rt', encoding='UTF8') as f:
             lines = f.readlines()
+            if file_dir[-3:] == '.py':
+                file_type = '#'
+            elif file_dir[-3:] == '.js':
+                file_type = '//'
+
             for line in lines:
-                if line == '#encrpytion_underline\n':
-                    edited_lines.append('#encrpyted\n')
+                if line == file_type+'encryption_underline\n':
+                    edited_lines.append(file_type+'encrypted\n')
                     encrpyt_mode = True
                     continue
                 if encrpyt_mode == True:
                     line = line.encode('UTF8')
                     encrpyted_bytes = rsa.encrypt(line,public_key)
                     encrpyted_msg = base64.b64encode(encrpyted_bytes).decode('UTF-8')
-                    edited_lines.append('#'+encrpyted_msg+'\n')
+                    edited_lines.append(encrpyted_msg+'\n')
                     encrpyt_mode = False
                 else:
                     edited_lines.append(line)
@@ -94,14 +107,19 @@ def Decrpytion(name,userid):
     for file_dir in decrpyt_file_list:
         with open(file_dir, 'rt', encoding='UTF8') as f:
             lines = f.readlines()
+            if file_dir[-3:] == '.py':
+                file_type = '#'
+            elif file_dir[-3:] == '.js':
+                file_type = '//'
+
             for line in lines:
-                if line == '#encrpyted\n':
-                    edited_lines.append('#encrpytion_underline\n')
+                if line == file_type+'encrypted\n':
+                    edited_lines.append(file_type+'encryption_underline\n')
                     decrpyt_mode = True
                     continue
                 if decrpyt_mode == True:
                     line = base64.b64decode(line)
-                    line = rsa.decrypt(line,private_key).decode("utf-8")
+                    line = rsa.decrypt(line,private_key).decode("UTF-8")
                     edited_lines.append(line)
                     decrpyt_mode = False
                 else:
