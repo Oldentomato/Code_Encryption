@@ -46,7 +46,7 @@ def set_gitignore():
     write_mode = False
     with open('.gitignore','r') as f:
         line = f.readlines()
-        if '\nprivate.pem' or 'private.pem\n' not in line:
+        if 'private.pem' or 'private.pem\n' not in line:
             write_mode = True
     if write_mode == True:
         with open('.gitignore','a+') as f:
