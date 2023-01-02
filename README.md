@@ -1,6 +1,6 @@
-## Code Encrpytion Tool
-[![GitHub](https://img.shields.io/github/license/oldentomato/Code_encrpytion)](https://github.com/Oldentomato/Code_Encrpytion/blob/main/LICENSE)
-[![BCH compliance](https://bettercodehub.com/edge/badge/Oldentomato/Code_Encrpytion?branch=main)](https://bettercodehub.com/)
+## Code Encryption Tool
+[![GitHub](https://img.shields.io/github/license/oldentomato/Code_encryption)](https://github.com/Oldentomato/Code_Encryption/blob/main/LICENSE)
+[![BCH compliance](https://bettercodehub.com/edge/badge/Oldentomato/Code_Encryption?branch=main)](https://bettercodehub.com/)
 > modules
 - python 3.9.6
 - pymongo 4.3.3
@@ -14,7 +14,7 @@
 > How to Use
 - Sign up for the program. ID is not duplicated.
     - In Database  
-    ![DatabaseScreenShot](https://github.com/Oldentomato/Code_Encrpytion/blob/main/readme_imgs/dbimage.png)
+    ![DatabaseScreenShot](https://github.com/Oldentomato/Code_Encryption/blob/main/readme_imgs/dbimage.png)
         - Files Array is a list of files in which encryption code was detected in your project.
           
     **At run time, the program must be in the project file.**  
@@ -23,9 +23,9 @@
 
 - Download your public, private key (private key will upload your DB and write gitignore automally)
 - Write this code above the code you want to encrypt.  
- ___#encrpytion_underline___   
+ ___#encryption_underline___   
  (Supported File Types: .py .cs .js .ts)  
-- Encrpytion with ProjectName It will detects files marked #encrpytion_underline.
-- When decrypting, press the Descrpyion button with the Filename(ProjectName).
+- Encryption with ProjectName It will detects files marked #encryption_underline.
+- When decrypting, press the Descrypion button with the Filename(ProjectName).
 
 
