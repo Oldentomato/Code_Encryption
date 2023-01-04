@@ -1,7 +1,7 @@
 ## Code Encryption Tool
 [![GitHub](https://img.shields.io/github/license/oldentomato/Code_encryption)](https://github.com/Oldentomato/Code_Encryption/blob/main/LICENSE)
 [![BCH compliance](https://bettercodehub.com/edge/badge/Oldentomato/Code_Encryption?branch=main)](https://bettercodehub.com/)
-[![BCH compliance](https://img.shields.io/github/v/release/oldentomato/Code_Encryption)](https://github.com/Oldentomato/Code_Encryption/releases)
+[![Build Version](https://img.shields.io/github/v/release/oldentomato/Code_Encryption)](https://github.com/Oldentomato/Code_Encryption/releases)
 > modules
 - python 3.9.6
 - pymongo 4.3.3
