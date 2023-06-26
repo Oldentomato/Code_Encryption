@@ -118,7 +118,8 @@ def login():
         for index,file in enumerate(files):
             tree_id = tree.insert("","end","project"+str(index),text="Project : "+str(file['filename']))
             for dir in file['file_list']:
-                tree.insert(tree_id, "end", text=" ", values=(str(dir)))
+                dir = str(dir).replace("\\","/")
+                tree.insert(tree_id, "end", text=" ", values=(dir))
 
 
         tree.grid(row = 1, column = 5, padx = 10, pady = 10)
@@ -167,3 +168,5 @@ Button(frame_login, text = 'register',command=lambda:[openFrame("register",frame
 
 openFrame("login",frame_login)
 window.mainloop()
+
+#pyinstaller --onefile run_file.py
