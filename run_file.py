@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 import os
 from tkinter import *
+from tkinter import ttk
 import tkinter.messagebox as msgbox
 from werkzeug.security import generate_password_hash, check_password_hash
 import code_encrpytion as enc
@@ -42,6 +43,10 @@ register_id, register_pass = StringVar(), StringVar()
 
 en_file_name,de_file_name = StringVar(), StringVar()
 
+
+def set_treeview():
+    pass
+
 def set_gitignore():
     write_mode = False
     with open('.gitignore','r') as f:
@@ -52,7 +57,8 @@ def set_gitignore():
         with open('.gitignore','a+') as f:
             f.write('private.pem\n')
 
-def openFrame(frame):
+def openFrame(windowname,frame):
+    window.title(windowname)
     frame.tkraise()
 
 def upload_key(id):
@@ -87,17 +93,36 @@ def login():
         msgbox.showinfo("로그인 실패","해당 아이디는 조회되지 않음")
     elif check_password_hash(last_signup.get("password"),password.get()):
         #메인화면 페이지
-        window.geometry("500x500")
+        window.geometry("1000x500")
         window.title("Main")
         Label(frame_main, text = "Welcome " + user_id.get()).grid(row = 0, column = 1, padx = 10, pady = 10)
         Button(frame_main, text = 'Download_Key',command=lambda:[download_key(user_id.get())]).grid(row = 1, column = 1, padx = 10, pady = 10)
         Label(frame_main, text = "ProjectName: ").grid(row = 2, column = 1, padx = 10, pady = 10)
-        Entry(frame_main, textvariable = en_file_name).grid(row = 2, column = 2, padx = 10, pady = 10)
+        Entry(frame_main, textvariable = en_file_name).grid(row = 2, column = 3, padx = 10, pady = 10)
         Button(frame_main, text = 'Encrpytion',command=lambda:[enc.Encrpytion(en_file_name.get(),user_id.get())]).grid(row = 4, column = 1, padx = 10, pady = 10)
         Label(frame_main, text = "ProjectName: ").grid(row = 5, column = 1, padx = 10, pady = 10)
-        Entry(frame_main, textvariable = de_file_name).grid(row = 5, column = 2, padx = 10, pady = 10)
+        Entry(frame_main, textvariable = de_file_name).grid(row = 5, column = 3, padx = 10, pady = 10)
         Button(frame_main, text = 'Decrpytion',command=lambda:[enc.Decrpytion(de_file_name.get(),user_id.get())]).grid(row = 6, column = 1, padx = 10, pady = 10)
-        openFrame(frame_main)
+        Label(frame_main, text = "Projects ").grid(row = 0, column = 5, padx = 10, pady = 10)
+        Button(frame_main, text = 'logout',command=lambda:[openFrame("login",frame_login)]).grid(row = 7, column = 1, padx = 10, pady = 10)
+
+        files = GetAllFileInfo(user_id.get())
+
+        tree = ttk.Treeview(frame_main)
+        tree["columns"] = ("project name", "dirs")
+        tree.column("project name",width=100)
+        tree.column("dirs",width=300)
+        tree.heading("#0",text="project name")
+        tree.heading("#1",text="dirs")
+
+        for index,file in enumerate(files):
+            tree_id = tree.insert("","end","project"+str(index),text="Project : "+str(file['filename']))
+            for dir in file['file_list']:
+                tree.insert(tree_id, "end", text=" ", values=(str(dir)))
+
+
+        tree.grid(row = 1, column = 5, padx = 10, pady = 10)
+        openFrame("main",frame_main)
     else:
         msgbox.showinfo("로그인 실패","비밀번호가 틀림")
 
@@ -113,7 +138,7 @@ def regist_userinfo():
             }
             InsertInfo(to_db)
             msgbox.showinfo("회원가입","회원가입 성공")
-            openFrame(frame_login)
+            openFrame("login",frame_login)
         else:
             msgbox.showinfo("알림","아이디, 비밀번호를 모두 입력해주십시오")
     else:
@@ -129,6 +154,7 @@ Label(frame_register, text = "Password : ").grid(row = 1, column = 0, padx = 10,
 Entry(frame_register, textvariable = register_id).grid(row = 0, column = 1, padx = 10, pady = 10)
 Entry(frame_register, textvariable = register_pass, show='*').grid(row = 1, column = 1, padx = 10, pady = 10)
 Button(frame_register, text = 'register',command=regist_userinfo).grid(row = 2, column = 1, padx = 10, pady = 10)
+Button(frame_register, text = 'back',command=lambda:[openFrame("login",frame_login)]).grid(row = 2, column = 0, padx = 10, pady = 10)
 
 #로그인 페이지
 Label(frame_login, text = "Username : ").grid(row = 0, column = 0, padx = 10, pady = 10)
@@ -136,8 +162,8 @@ Label(frame_login, text = "Password : ").grid(row = 1, column = 0, padx = 10, pa
 Entry(frame_login, textvariable = user_id).grid(row = 0, column = 1, padx = 10, pady = 10)
 Entry(frame_login, textvariable = password, show='*').grid(row = 1, column = 1, padx = 10, pady = 10)
 Button(frame_login, text = "Login", command = login).grid(row = 2, column = 0, padx = 15, pady = 10)
-Button(frame_login, text = 'register',command=lambda:[openFrame(frame_register)]).grid(row = 2, column = 1, padx = 1, pady = 10)
+Button(frame_login, text = 'register',command=lambda:[openFrame("register",frame_register)]).grid(row = 2, column = 1, padx = 1, pady = 10)
 
 
-openFrame(frame_login)
+openFrame("login",frame_login)
 window.mainloop()

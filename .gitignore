@@ -7,4 +7,5 @@ mongo_url.py
 private.pem
 build
 dist
+run_file.spec
 

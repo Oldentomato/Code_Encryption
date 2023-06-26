@@ -26,6 +26,10 @@ def DeleteFileData(id,name):
 def UpdateFileData(id,data):
     collection.update_one({"id":id},{"$push":{"Files":data}})
 
+def GetAllFileInfo(id):
+    user = GetUserInfo(id)
+    return user['Files']
+
 
 
 
